@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -12,13 +13,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ApiResource(
-    attributes: ["security" => "is_granted('ROLE_USER')"],
+    normalizationContext: ['groups' => ['read']],
+    denormalizationContext: ['groups' => ['write']],
     collectionOperations: [
-        "get",
-        "post" => ["security" => "is_granted('ROLE_ADMIN') or object == user"],
+        "get" => ["security" => "is_granted('ROLE_ADMIN')"],
+        "post",
     ],
     itemOperations: [
-        "get",
+        "get" => ["security" => "is_granted('ROLE_ADMIN') or object == user"],
         "put" => ["security" => "is_granted('ROLE_ADMIN') or object == user"],
     ],
 )]
@@ -27,14 +29,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["read"])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Groups(["read", "write"])]
     public string $email = '';
 
     #[ORM\Column(type: 'json')]
+    #[Groups(["read"])]
     public $roles = [];
 
+    // This will NOT get stored in the Database
+    #[Groups(["write"])]
+    public ?string $plainPassword = null;
+
+    // This is stored in the database but never shown to the user
     #[ORM\Column(type: 'string')]
     public string $password = '';
 
@@ -88,6 +98,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 }
