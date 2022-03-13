@@ -15,14 +15,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ApiResource(
     normalizationContext: ['groups' => ['read']],
     denormalizationContext: ['groups' => ['write']],
-    collectionOperations: [
-        "get" => ["security" => "is_granted('ROLE_ADMIN')"],
-        "post",
-    ],
-    itemOperations: [
-        "get" => ["security" => "is_granted('ROLE_ADMIN') or object == user"],
-        "put" => ["security" => "is_granted('ROLE_ADMIN') or object == user"],
-    ],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {

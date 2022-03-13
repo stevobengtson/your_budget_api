@@ -10,9 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: '`category_group`')]
-#[ApiResource(
-    attributes: ["security" => "is_granted('ROLE_USER')"]
-)]
+#[ApiResource()]
 class CategoryGroup
 {
     #[ORM\Id]

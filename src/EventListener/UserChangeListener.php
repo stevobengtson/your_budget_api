@@ -39,6 +39,8 @@ class UserChangeListener
     private function updateRoles(User $user): void
     {
         // Ensure that roles has ROLE_USER at least
-        $user->roles = array_merge($user->roles, ['ROLE_USER']);
+        $roles = $user->roles;
+        $roles[] = 'ROLE_USER';
+        $user->roles = array_unique($roles);        
     }
 }

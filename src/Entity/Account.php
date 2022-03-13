@@ -4,23 +4,12 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: '`account`')]
-#[ApiResource(
-    attributes: ["security" => "is_granted('ROLE_USER')"],
-    collectionOperations: [
-        "get" => ["security" => "object.user == user"],
-        "post" => ["security" => "object.user == user"],
-    ],
-    itemOperations: [
-        "get" => ["security" => "object.user == user"],
-        "put" => ["security" => "object.user == user"],
-    ],
-)]
+#[ApiResource()]
 class Account
 {
     #[ORM\Id]

@@ -10,9 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: '`budget_month_category`')]
-#[ApiResource(
-    attributes: ["security" => "is_granted('ROLE_USER')"]
-)]
+#[ApiResource()]
 class BudgetMonthCategory
 {
     #[ORM\Id]
@@ -21,7 +19,10 @@ class BudgetMonthCategory
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: 'BudgetMonth', inversedBy: 'budget_month_categories', cascade: ['persist', 'remove'])]
+    #[ApiSubresource(maxDepth: 1)]
     public ?BudgetMonth $budget_month = null;
+
+    // TODO: Link to a category?
 
     #[ORM\Column(type: 'decimal', precision:12, scale:3, nullable: false)]
     public float $assigned = 0.0;

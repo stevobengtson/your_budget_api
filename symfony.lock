@@ -261,6 +261,9 @@
             "config/packages/nelmio_cors.yaml"
         ]
     },
+    "nesbot/carbon": {
+        "version": "2.57.0"
+    },
     "nette/php-generator": {
         "version": "v3.6.5"
     },
@@ -288,6 +291,9 @@
     "phpdocumentor/type-resolver": {
         "version": "1.6.0"
     },
+    "phpstan/phpstan": {
+        "version": "1.4.9"
+    },
     "psr/cache": {
         "version": "3.0.0"
     },
@@ -314,6 +320,18 @@
     },
     "ralouphie/getallheaders": {
         "version": "3.0.3"
+    },
+    "squizlabs/php_codesniffer": {
+        "version": "3.6",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.6",
+            "ref": "1019e5c08d4821cb9b77f4891f8e9c31ff20ac6f"
+        },
+        "files": [
+            "phpcs.xml.dist"
+        ]
     },
     "symfony/asset": {
         "version": "v6.0.1"
@@ -559,6 +577,19 @@
     },
     "symfony/string": {
         "version": "v6.0.2"
+    },
+    "symfony/translation": {
+        "version": "6.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "5.3",
+            "ref": "da64f5a2b6d96f5dc24914517c0350a5f91dee43"
+        },
+        "files": [
+            "config/packages/translation.yaml",
+            "translations/.gitignore"
+        ]
     },
     "symfony/translation-contracts": {
         "version": "v3.0.0"
