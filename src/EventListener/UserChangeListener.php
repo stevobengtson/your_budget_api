@@ -31,8 +31,7 @@ class UserChangeListener
         }
 
         // Hash the password if not already done
-        $hashedPassword = $this->passwordHasher->hashPassword($user, $user->plainPassword);
-        $user->password = $hashedPassword;
+        $user->password = $this->passwordHasher->hashPassword($user, $user->plainPassword);
         $user->eraseCredentials();
     }
 

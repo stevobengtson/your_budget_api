@@ -22,6 +22,7 @@ class AppFixtures extends Fixture
         $adminUser = new User();
         $adminUser->email = "admin@test.com";
         $adminUser->plainPassword = "test1234";
+        // $adminUser->password = '$2y$13$F1xoCv6xGzdpFLQlsQes3ex7.0Zv4x1V6yYiy3v7w7dt9vuu/4AhG';
         $adminUser->roles = ['ROLE_USER', 'ROLE_ADMIN'];
         $manager->persist($adminUser);
 
@@ -37,6 +38,7 @@ class AppFixtures extends Fixture
         $user = new User();
         $user->email = "test@test.com";
         $user->plainPassword = "test1234";
+        // $user->password = '$2y$13$F1xoCv6xGzdpFLQlsQes3ex7.0Zv4x1V6yYiy3v7w7dt9vuu/4AhG';
         $user->roles = ['ROLE_USER'];
         $manager->persist($user);
 
