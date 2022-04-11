@@ -17,6 +17,7 @@
         "nelmio/cors-bundle": "^2.2",
         "nesbot/carbon": "^2.57",
         "phpdocumentor/reflection-docblock": "^5.2",
+        "ramsey/uuid-doctrine": "^1.8",
         "symfony/asset": "6.0.*",
         "symfony/console": "6.0.*",
         "symfony/dotenv": "6.0.*",

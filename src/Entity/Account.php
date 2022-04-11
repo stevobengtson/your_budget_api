@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -13,9 +14,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Account
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    /**
+     * @var \Ramsey\Uuid\UuidInterface
+     */
+    private $id;
 
     #[ORM\Column(type: 'string', length: 1024)]
     #[Assert\NotBlank]
@@ -34,7 +39,7 @@ class Account
     #[ApiSubresource(maxDepth: 1)]
     public iterable $transactions;
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }

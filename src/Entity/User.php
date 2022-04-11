@@ -4,11 +4,12 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
-use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -19,10 +20,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     #[Groups(["read"])]
-    private ?int $id = null;
+    /**
+     * @var \Ramsey\Uuid\UuidInterface
+     */
+    private $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Groups(["read", "write"])]
@@ -44,7 +49,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ApiSubresource(maxDepth: 1)]
     public iterable $budgets;
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }

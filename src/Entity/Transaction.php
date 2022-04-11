@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: '`transaction`')]
@@ -12,9 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Transaction
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    /**
+     * @var \Ramsey\Uuid\UuidInterface
+     */
+    private $id;
 
     #[ORM\ManyToOne(targetEntity: 'Account', inversedBy: 'transactions', cascade: ['persist', 'remove'])]
     public ?Account $account = null;
@@ -39,7 +44,7 @@ class Transaction
     #[ORM\Column(type: 'boolean', nullable: false)]
     public bool $cleared = false;
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }

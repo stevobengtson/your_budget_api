@@ -3,9 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -14,9 +13,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Payee
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    /**
+     * @var \Ramsey\Uuid\UuidInterface
+     */
+    private $id;
 
     #[ORM\ManyToOne(targetEntity: 'Budget', inversedBy: 'payees', cascade: ['persist', 'remove'])]
     public ?Budget $budget = null;
@@ -25,7 +28,7 @@ class Payee
     #[Assert\NotBlank]
     public string $name = '';
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }

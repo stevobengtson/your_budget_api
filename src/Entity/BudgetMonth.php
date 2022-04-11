@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: '`budget_month`')]
@@ -12,9 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
 class BudgetMonth
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    /**
+     * @var \Ramsey\Uuid\UuidInterface
+     */
+    private $id;
 
     #[ORM\ManyToOne(targetEntity: 'Budget', inversedBy: 'budget_months', cascade: ['persist', 'remove'])]
     #[ApiSubresource(maxDepth: 1)]
@@ -30,7 +35,7 @@ class BudgetMonth
     #[ORM\Column(type: 'integer')]
     public int $month = 0;
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }

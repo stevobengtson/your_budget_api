@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -17,10 +18,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Budget
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     #[Groups(["read"])]
-    private ?int $id = null;
+    /**
+     * @var \Ramsey\Uuid\UuidInterface
+     */
+    private $id;
 
     #[ORM\Column(type: 'string', length: 1024)]
     #[Assert\NotBlank]
@@ -56,7 +61,7 @@ class Budget
     #[Groups(["read"])]
     public iterable $categories;
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }
